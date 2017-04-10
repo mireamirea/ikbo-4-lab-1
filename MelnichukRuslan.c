@@ -1,28 +1,31 @@
-#define _CRT_SECURE_NO_WARNINGS
-#define N 255
 #include <stdio.h>
+#include <stdlib.h>
+#define STRLEN 255
 
-int main() {
-	FILE *file;
-	struct output {
-		int x;
-		char y[255];
-		float z;
-	};
-	struct output t;
-	int i = 0, size=0, s=sizeof(struct output);
-	file = fopen("data.dat", "rb");
-	if (file!= NULL) {
-		while (!feof(file)) {
-			fread(&t, sizeof(struct output), 1, file);
-			printf("%d %s %.2f\n", t.x, t.y, t.z);
-			++size;
-		};
+struct input {
+	int number;
+	char str[STRLEN];
+	float point;
+};
+
+int main(int argc, char *argv[])
+{
+	struct input p1;
+	FILE *fp;
+	long int size;
+
+
+	if ((argc == 1) || (!(fopen(argv[1], "rb")))) {
+		printf("Attempt at opening file: %s <filename>\n", argv[0]);
+		return 1;
 	}
-	else {
-		printf("File not found");
+	fp = fopen(argv[1], "rb");
+	while (fread(&p1, sizeof(struct input), 1, fp)) {
+		printf("%d,%s,%f\n", p1.number, p1.str, p1.point);
 	}
-	size *= s;
-	printf("File fize: %u bytes \n", size);
-	fclose(file);
+	fseek(fp, 0, SEEK_END);
+	size = ftell(fp);
+	printf("Size of file: %d%s", size, " bytes\n");
+	fclose(fp);
+	return 0;
 }

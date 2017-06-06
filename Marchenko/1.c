@@ -27,7 +27,7 @@ int main(int argc, char *argv[])
     while ((fread(&temp,sizeof(Pack),1,f)!=0))
         printf("%d\t%s\t%.2f\n",temp.num,temp.str,temp.fnum);
     fseek(f, 0, SEEK_END);
-	printf("File size: %d%s", ftell(f), " byte\n");
+	printf("File size: %ld%s", ftell(f), " byte\n");
 	fclose(f);
     return 0;
 }
